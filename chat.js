@@ -29,6 +29,8 @@ const colors = [
 myRL.init()
 changePrompt()
 
+usernameStep()
+
 myRL.on('line', function(line) {
     const splitedLine = line.split(' ')
     switch (splitedLine[0]) {
@@ -40,6 +42,7 @@ myRL.on('line', function(line) {
                 channel = splitedLine[1]
                 esConnection.close()
                 connect()
+                updateChannel()
                 changePrompt()
                 break
             }
@@ -58,6 +61,8 @@ function usernameStep() {
             username = usernameInput
             usercolor = colors[Math.floor(Math.random() * colors.length)];
             console.log(`Welcome ${username}`)
+            connect()
+            updateChannel()
             changePrompt()
         });
 
@@ -88,8 +93,6 @@ function connect() {
     })
 }
 
-connect()
-
 async function getChannels() {
     const userCredentials = await new esClient.UserCredentials('admin', 'changeit');
     const pm = await new esClient.ProjectionsManager(new esClient.NoopLogger(), `http://${httpHost}`, 5000)
@@ -107,10 +110,14 @@ async function showChannels() {
     console.log('/channels #channelName# for new channel')
 }
 
-esConnection.subscribeToStream(`channel-${channel}`, false, onEvent)
-    .catch(error => {
-        console.log('error str:', error)
-    })
+function updateChannel() {
+    setTimeout(function(){
+        esConnection.subscribeToStream(`channel-${channel}`, false, onEvent)
+            .catch(error => {
+                console.log('error str:', error)
+            })
+    }, 100);
+}
 
 function onEvent(subscription, event) {
     const data = JSON.parse(event.originalEvent.data)
