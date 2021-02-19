@@ -4,8 +4,8 @@ const myRL = require("serverline")
 const chalk = require('chalk')
 const {v4: uuidv4} = require('uuid');
 
-let tcpHost = '0.tcp.ngrok.io:14696'
-let httpHost = 'http://5eb3033c29cc.ngrok.io'
+let tcpHost = '0.tcp.ngrok.io:18371'
+let httpHost = '4a192cf6c63b.ngrok.io'
 let username
 let usercolor
 let channel = 'main'
@@ -17,7 +17,6 @@ const colors = [
     'blue',
     'magenta',
     'cyan',
-    'white',
     'blackBright',
     'redBright',
     'greenBright',
